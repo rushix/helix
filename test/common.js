@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import helix from '../src/app.js';
 
-describe('common cases' () => {
+describe('common cases', () => {
 
   it('3x3 matrix', () => {
     const matrix = [
@@ -10,7 +10,7 @@ describe('common cases' () => {
       [7, 8, 9]
     ];
 
-    expect(helix(matrix)).to.equal('5 4 7 8 9 6 3 2 1');
+    expect(helix(matrix, false)).to.equal('5 4 7 8 9 6 3 2 1');
   });
 
   it('5x5 matrix', () => {
@@ -23,14 +23,16 @@ describe('common cases' () => {
     ];
 
     const correctResultString = ' false 3 abc 14 12 0 [object Object] 3 abirvalg   1 2 3 4 true undefined o 1389 a 8 undefined null true 3,1';
-    expect(helix(matrix)).to.equal(correctResultString);
+    expect(helix(matrix, false)).to.equal(correctResultString);
   });
 
   it('NxN matrix, where N is odd', () => {
     const nMax = 200;
     const n = parseInt(Math.random() * nMax, 10);
 
-    console.log(`N = 2 * n + 1 \/\/ ${ 2 * n + 1 }`);
+    console.log(`\n       N = 2 * n + 1`);
+    console.log(`       n = parseInt(Math.random() * 200, 10) = ${ n }`);
+    console.log(`       N = 2 * ${ n } + 1 = ${ 2 * n + 1 }\n`);
 
     // const values = [1, 2, 3, 4, ..., n];
     const values = Array.from({ length: n }, (v, i) => i + 1);
@@ -61,29 +63,19 @@ describe('common cases' () => {
       ];
     }, [[0]]);
 
-    function chain(subject, times) {
+    const printer = (number, times, partialResultString) => {
       if (times <= 0) {
-        return this;
+        return partialResultString;
       }
 
-      this.toString = () => {
-        return this.string;
-      }
-
-      this.chain = chain.bind(this);
-
-      this.string = (this.string === undefined)
-        ? `${ subject }`
-        : `${ this.string } ${ subject }`;
-
-      return chain.call(this, subject, --times);
+      return printer(number, --times, `${ partialResultString } ${ number }`);
     }
 
     const correctResultString = values.reduce((acc, value) => {
-      return acc.chain(value, 8 ** value);
-    }, chain(0, 1));
+      return printer(value, 8 * value, acc);
+    }, '0');
 
-    expect(helix(matrix)).to.equal(`${ correctResultString }`);
+    expect(helix(matrix, false)).to.equal(`${ correctResultString }`);
   });
 
 });

@@ -3,9 +3,9 @@ import helix from '../src/app.js';
 
 describe('corner cases and throws', () => {
 
-  it('is array', () => expect(helix(undefined)).to.throw());
+  it('is array', () => expect(() => { helix(undefined) }).to.throw(TypeError));
 
-  it('is matrix', () => expect(helix([2, 'word', false])).to.throw());
+  it('is matrix', () => expect(() => { helix([2, 'word', false]) }).to.throw(TypeError));
 
   it('is square matrix', () => {
     const matrix = [
@@ -16,7 +16,7 @@ describe('corner cases and throws', () => {
       [5, 5, 5, 5, 5]
     ];
 
-    expect(helix(matrix)).to.throw();
+    expect(() => { helix(matrix) }).to.throw(Error);
   });
 
   it('length is odd', () => {
@@ -24,11 +24,11 @@ describe('corner cases and throws', () => {
       [], [], [], []
     ];
 
-    expect(helix(matrix)).to.throw();
+    expect(() => { helix(matrix) }).to.throw(Error);
   });
 
   it('single', () => {
-    expect(helix([[true]])).to.equal('true');
+    expect(helix([[true]], false)).to.equal('true');
   });
 
 });

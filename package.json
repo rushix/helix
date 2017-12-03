@@ -4,7 +4,7 @@
   "description": "helix matrix output",
   "main": "./dist/app.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test": "mocha --require babel-core/register --recursive",
     "build": "babel ./src/app.js --out-file ./dist/app.js"
   },
   "repository": {
