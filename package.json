@@ -2,7 +2,7 @@
   "name": "helix",
   "version": "0.0.1",
   "description": "helix matrix output",
-  "main": "app.js",
+  "main": "./dist/app.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive",
     "build": "babel ./src/app.js --out-file ./dist/app.js"

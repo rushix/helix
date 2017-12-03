@@ -13,16 +13,53 @@ describe('common cases' () => {
     expect(helix(matrix)).to.equal('5 4 7 8 9 6 3 2 1');
   });
 
-  it('7x7 matrix', () => {
+  it('5x5 matrix', () => {
     const matrix = [
-      [1, 1, 1, 1, 1, 1, 1],
-      [1, 2, 2, 2, 2, 2, 1],
-      [1, 2, 3, 3, 3, 2, 1],
-      [1, 2, 3, 4, 3, 2, 1],
-      [1, 2, 3, 3, 3, 2, 1],
-      [1, 2, 2, 2, 2, 2, 1],
-      [1, 1, 1, 1, 1, 1, 1],
+      [true,        null,   undefined,            8,  'a'],
+      [[3, 1],      3,      { a: true, 0: '2' },  0,  1389],
+      ['abirvalg',  false,  '',                   12, 'o'],
+      [' ',         3,      'abc',                14, undefined],
+      [1,           2,      3,                    4,  'true'],
     ];
+
+    const correctResultString = ' false 3 abc 14 12 0 [object Object] 3 abirvalg   1 2 3 4 true undefined o 1389 a 8 undefined null true 3,1';
+    expect(helix(matrix)).to.equal(correctResultString);
+  });
+
+  it('NxN matrix, where N is odd', () => {
+    const nMax = 200;
+    const n = parseInt(Math.random() * nMax, 10);
+
+    console.log(`N = 2 * n + 1 \/\/ ${ 2 * n + 1 }`);
+
+    // const values = [1, 2, 3, 4, ..., n];
+    const values = Array.from({ length: n }, (v, i) => i + 1);
+
+    /*
+     *
+     * const matrix = [
+     *   [n,   n,   n,   n,   n,   n, n],
+     *   [n, ..., ..., ..., ..., ..., n],
+     *   [n, ...,   1,   1,   1, ..., n],
+     *   [n, ...,   1,   0,   1, ..., n],
+     *   [n, ...,   1,   1,   1, ..., n],
+     *   [n, ..., ..., ..., ..., ..., n],
+     *   [n,   n,   n,   n,   n,   n, n]
+     * ];
+     *
+     * */
+    const matrix = values.reduce((acc, value) => {
+      const length = acc.length + 2;
+      const frameArray = Array.from({ length }, () => value);
+
+      return [
+        frameArray,
+
+        ...acc.map(innerAcc => [value, ...innerAcc, value]),
+
+        frameArray
+      ];
+    }, [[0]]);
 
     function chain(subject, times) {
       if (times <= 0) {
@@ -42,12 +79,11 @@ describe('common cases' () => {
       return chain.call(this, subject, --times);
     }
 
-    const rightResult = chain(4, 1)
-      .chain(3, 8)
-      .chain(2, 16)
-      .chain(1, 24);
+    const correctResultString = values.reduce((acc, value) => {
+      return acc.chain(value, 8 ** value);
+    }, chain(0, 1));
 
-    expect(helix(matrix)).to.equal(`${ rightResult }`);
+    expect(helix(matrix)).to.equal(`${ correctResultString }`);
   });
 
 });
