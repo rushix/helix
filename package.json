@@ -1,5 +1,5 @@
 {
-  "name": "helix",
+  "name": "helix-matrix",
   "version": "0.0.1",
   "description": "helix matrix output",
   "main": "./dist/app.js",
@@ -30,6 +30,8 @@
     "mocha": "^4.0.1"
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   }
 }
